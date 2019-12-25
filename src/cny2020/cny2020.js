@@ -1,6 +1,14 @@
 class CNY2020 {
   constructor () {
-    console.log('Gong Xi Fa Cai');
+    this.prevTime = null;
+    this.main();
+  }
+  
+  main (time) {
+    const timeDelta = (this.prevTime) ? time - this.prevTime : time;
+    this.prevTime = time;
+    
+    this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
   }
 };
 

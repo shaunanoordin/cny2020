@@ -1,0 +1,23 @@
+{
+  "name": "cny2020",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shaunanoordin/cny2020/"
+  },
+  "homepage": "https://shaunanoordin.com/cny2020/",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
+    "concurrently": "^5.0.2",
+    "express": "^4.17.1",
+    "sass": "^1.24.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  },
+  "scripts": {
+    "start": "webpack && sass src:app && node server.js",
+    "dev": "concurrently \"webpack --watch\" \"sass --watch src:app\" \"node server.js\""
+  }
+}

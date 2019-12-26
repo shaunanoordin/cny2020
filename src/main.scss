@@ -59,8 +59,9 @@ table {
 
 #app > header,
 #app > footer {
+  font-size: 0.8em;
   flex: 0 0 auto;
-  padding: 1em;
+  padding: 0.5em 1em;
   background: $primary;
   color: $light;
 
@@ -69,6 +70,11 @@ table {
     margin: 0;
     padding: 0;
   }
+  
+  a {
+    color: $white;
+    text-decoration: underline;
+  }
 }
 
 #app > main {
@@ -76,10 +82,11 @@ table {
   background: $white;
   
   #canvas {
-    
+    display: block;
   }
   
   #console {
+    display: block;
     white-space: pre;
   }
 }

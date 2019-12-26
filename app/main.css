@@ -46,8 +46,9 @@ table th {
 
 #app > header,
 #app > footer {
+  font-size: 0.8em;
   flex: 0 0 auto;
-  padding: 1em;
+  padding: 0.5em 1em;
   background: #c44;
   color: #eee;
 }
@@ -57,12 +58,21 @@ table th {
   margin: 0;
   padding: 0;
 }
+#app > header a,
+#app > footer a {
+  color: #fff;
+  text-decoration: underline;
+}
 
 #app > main {
   flex: 1 1 auto;
   background: #fff;
 }
+#app > main #canvas {
+  display: block;
+}
 #app > main #console {
+  display: block;
   white-space: pre;
 }
 

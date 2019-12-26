@@ -59,19 +59,35 @@ table {
 
 #app > header,
 #app > footer {
+  font-size: 0.8em;
   flex: 0 0 auto;
-  padding: 1em;
+  padding: 0.5em 1em;
   background: $primary;
   color: $light;
 
   h1 {
+    font-size: 1em;
     margin: 0;
     padding: 0;
+  }
+  
+  a {
+    color: $white;
+    text-decoration: underline;
   }
 }
 
 #app > main {
   flex: 1 1 auto;
-  padding: 1em;
   background: $white;
+  
+  #canvas {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  #console {
+    display: block;
+    white-space: pre;
+  }
 }

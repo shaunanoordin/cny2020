@@ -14,6 +14,7 @@ class CNY2020 {
     
     this.html.canvas.width = this.canvasWidth;
     this.html.canvas.height = this.canvasHeight;
+    this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
@@ -54,6 +55,27 @@ class CNY2020 {
     
     this.html.console.textContent = this.messages.join('\n');
   }
+  
+  onPointerDown (e) {    
+    const coords = getEventCoords(e, this.html.canvas);
+    const col = Math.floor(coords.x / TILE_SIZE);
+    const row = Math.floor(coords.y / TILE_SIZE);
+    
+    this.print(`Clicked on COL ${col} ROW ${row}`);
+  }
+  
+  onPointerUp (e) {
+    
+  }
 };
+
+function getEventCoords (event, element) {
+  const xRatio = (element.width && element.offsetWidth) ? element.width / element.offsetWidth : 1;
+  const yRatio = (element.height && element.offsetHeight) ? element.height / element.offsetHeight : 1;
+  
+  const x = event.offsetX * xRatio;
+  const y = event.offsetY * yRatio;
+  return { x, y };
+}
 
 export default CNY2020;

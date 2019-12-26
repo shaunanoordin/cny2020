@@ -70,6 +70,7 @@ table th {
 }
 #app > main #canvas {
   display: block;
+  margin: 0 auto;
 }
 #app > main #console {
   display: block;

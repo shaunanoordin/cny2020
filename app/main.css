@@ -53,14 +53,17 @@ table th {
 }
 #app > header h1,
 #app > footer h1 {
+  font-size: 1em;
   margin: 0;
   padding: 0;
 }
 
 #app > main {
   flex: 1 1 auto;
-  padding: 1em;
   background: #fff;
+}
+#app > main #console {
+  white-space: pre;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -65,6 +65,7 @@ table {
   color: $light;
 
   h1 {
+    font-size: 1em;
     margin: 0;
     padding: 0;
   }
@@ -72,6 +73,13 @@ table {
 
 #app > main {
   flex: 1 1 auto;
-  padding: 1em;
   background: $white;
+  
+  #canvas {
+    
+  }
+  
+  #console {
+    white-space: pre;
+  }
 }

@@ -40,7 +40,7 @@ class CNY2020 {
     this.canvas2d.strokeStyle = '2px solid #888';
     this.canvas2d.beginPath();
     for (let y = 0; y < GRID_HEIGHT; y++) {
-      for (let x = 0; x < GRID_HEIGHT; x++) {
+      for (let x = 0; x < GRID_WIDTH; x++) {
         this.canvas2d.rect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE);
       }
     }

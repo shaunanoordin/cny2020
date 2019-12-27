@@ -1,4 +1,6 @@
-import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants'
+import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants';
+import Grid from './grid';
+import Tile from './tile';
 
 class CNY2020 {
   constructor () {
@@ -16,6 +18,9 @@ class CNY2020 {
     this.html.canvas.height = this.canvasHeight;
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     
+    this.grid = new Grid();
+    this.loadLevel();
+    
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
   }
@@ -30,21 +35,65 @@ class CNY2020 {
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
   }
   
+  loadLevel () {
+
+  }
+  
   play (timeDelta) {
     
   }
   
   paint () {
     this.canvas2d.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+        
     
-    this.canvas2d.strokeStyle = '2px solid #888';
-    this.canvas2d.beginPath();
+    
     for (let y = 0; y < GRID_HEIGHT; y++) {
       for (let x = 0; x < GRID_WIDTH; x++) {
-        this.canvas2d.rect(TILE_SIZE * x, TILE_SIZE * y, TILE_SIZE, TILE_SIZE);
+        if (x < this.grid.leftPadding
+            || x > this.grid.rightPadding
+            || y < this.grid.topPadding
+            || y > this.grid.bottomPadding) {
+          this.canvas2d.fillStyle = '#eee';
+          this.canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        } else {
+          
+          const tile = this.grid.tiles[y - this.grid.topPadding][x - this.grid.leftPadding];
+          this.canvas2d.fillStyle = '#844';
+          this.canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+          
+          this.canvas2d.lineCap = "round";
+          this.canvas2d.lineWidth = 8;
+          this.canvas2d.strokeStyle = '#eee';
+          if (tile && tile.east) {
+            this.canvas2d.beginPath();
+            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.lineTo((x + 1) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.stroke();
+          }
+          if (tile && tile.west) {
+            this.canvas2d.beginPath();
+            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.lineTo((x + 0) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.stroke();
+          }
+          if (tile && tile.south) {
+            this.canvas2d.beginPath();
+            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.lineTo((x + 0.5) * TILE_SIZE, (y + 1) * TILE_SIZE);
+            this.canvas2d.stroke();
+          }
+          if (tile && tile.north) {
+            this.canvas2d.beginPath();
+            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
+            this.canvas2d.lineTo((x + 0.5) * TILE_SIZE, (y + 0) * TILE_SIZE);
+            this.canvas2d.stroke();
+          }
+          
+        }
+        
       }
     }
-    this.canvas2d.stroke();
   }
   
   print (text) {
@@ -58,8 +107,8 @@ class CNY2020 {
   
   onPointerDown (e) {    
     const coords = getEventCoords(e, this.html.canvas);
-    const col = Math.floor(coords.x / TILE_SIZE);
-    const row = Math.floor(coords.y / TILE_SIZE);
+    const col = Math.floor(coords.x / TILE_SIZE) - this.grid.leftPadding;
+    const row = Math.floor(coords.y / TILE_SIZE) - this.grid.topPadding;
     
     this.print(`Clicked on COL ${col} ROW ${row}`);
   }

@@ -36,7 +36,27 @@ class CNY2020 {
   }
   
   loadLevel () {
-
+    this.grid = new Grid({
+      width: 3,
+      height: 3,
+      tiles: [
+        [
+          new Tile({ north: true, south: true, }),
+          new Tile({ north: true, east: true, }),
+          new Tile({ west: true, east: true, }),
+        ],
+        [
+          new Tile({ south: true, west: true, }),
+          null,
+          new Tile({ west: true, east: true, }),
+        ],
+        [
+          new Tile({ north: true, south: true, }),
+          new Tile({ north: true, east: true, }),
+          new Tile({ west: true, east: true, }),
+        ],
+      ],
+    })
   }
   
   play (timeDelta) {
@@ -45,55 +65,8 @@ class CNY2020 {
   
   paint () {
     this.canvas2d.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-        
     
-    
-    for (let y = 0; y < GRID_HEIGHT; y++) {
-      for (let x = 0; x < GRID_WIDTH; x++) {
-        if (x < this.grid.leftPadding
-            || x > this.grid.rightPadding
-            || y < this.grid.topPadding
-            || y > this.grid.bottomPadding) {
-          this.canvas2d.fillStyle = '#eee';
-          this.canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        } else {
-          
-          const tile = this.grid.tiles[y - this.grid.topPadding][x - this.grid.leftPadding];
-          this.canvas2d.fillStyle = '#844';
-          this.canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-          
-          this.canvas2d.lineCap = "round";
-          this.canvas2d.lineWidth = 8;
-          this.canvas2d.strokeStyle = '#eee';
-          if (tile && tile.east) {
-            this.canvas2d.beginPath();
-            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.lineTo((x + 1) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.stroke();
-          }
-          if (tile && tile.west) {
-            this.canvas2d.beginPath();
-            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.lineTo((x + 0) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.stroke();
-          }
-          if (tile && tile.south) {
-            this.canvas2d.beginPath();
-            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.lineTo((x + 0.5) * TILE_SIZE, (y + 1) * TILE_SIZE);
-            this.canvas2d.stroke();
-          }
-          if (tile && tile.north) {
-            this.canvas2d.beginPath();
-            this.canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
-            this.canvas2d.lineTo((x + 0.5) * TILE_SIZE, (y + 0) * TILE_SIZE);
-            this.canvas2d.stroke();
-          }
-          
-        }
-        
-      }
-    }
+    this.grid.paint(this.canvas2d);
   }
   
   print (text) {

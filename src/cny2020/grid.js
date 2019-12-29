@@ -33,9 +33,7 @@ class Grid {
           const xIndex = x - this.leftPadding;
           const yIndex = y - this.topPadding;
           
-          const tile = (this.tiles && this.tiles[yIndex])
-            ? this.tiles[yIndex][xIndex]
-            : undefined;
+          const tile = this.getTile(xIndex, yIndex)
           
           if (tile) {
             canvas2d.fillStyle = '#844';
@@ -76,6 +74,12 @@ class Grid {
         }
       }
     }
+  }
+  
+  getTile (x, y) {
+    return (this.tiles && this.tiles[y] && this.tiles[y][x])
+      ? this.tiles[y][x]
+      : null;
   }
 }
 

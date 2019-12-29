@@ -18,18 +18,24 @@ class Grid {
     for (let y = 0; y < GRID_HEIGHT; y++) {
       for (let x = 0; x < GRID_WIDTH; x++) {
         
-        
         if (!(
           x >= this.leftPadding &&
           x < (GRID_WIDTH - this.rightPadding) &&
           y >= this.topPadding &&
           y < (GRID_HEIGHT - this.bottomPadding)
         )) {
+          
           canvas2d.fillStyle = '#eee';
           canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+          
         } else {
           
-          const tile = this.tiles[y - this.topPadding][x - this.leftPadding];
+          const xIndex = x - this.leftPadding;
+          const yIndex = y - this.topPadding;
+          
+          const tile = (this.tiles && this.tiles[yIndex])
+            ? this.tiles[yIndex][xIndex]
+            : undefined;
           
           if (tile) {
             canvas2d.fillStyle = '#844';
@@ -41,7 +47,7 @@ class Grid {
           
           // canvas2d.lineCap = "round";
           canvas2d.lineWidth = 8;
-          canvas2d.strokeStyle = '#eee';
+          canvas2d.strokeStyle = '#fff';
           if (tile && tile.east) {
             canvas2d.beginPath();
             canvas2d.moveTo((x + 0.5) * TILE_SIZE, (y + 0.5) * TILE_SIZE);
@@ -68,11 +74,8 @@ class Grid {
           }
           
         }
-        
       }
     }
-    
-    
   }
 }
 

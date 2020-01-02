@@ -1,4 +1,4 @@
-import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, MODES } from './constants';
+import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants';
 import Grid from './grid';
 import Tile from './tile';
 
@@ -18,10 +18,10 @@ class CNY2020 {
     this.html.canvas.height = this.canvasHeight;
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     
-    this.transitionCounter = 0;
-    this.transitionDuration = 1000;
+    this.tileMovingCounter = 0;
+    this.tileMovingDuration = 1000;
+    this.isTileMoving = false;
     
-    this.mode = MODES.IDLE;
     this.grid = new Grid();
     this.loadLevel();
     
@@ -40,7 +40,7 @@ class CNY2020 {
   }
   
   loadLevel () {
-    this.mode = MODES.IDLE;
+    this.isTileMoving = false;
     
     this.grid = new Grid({
       width: 3,
@@ -67,13 +67,12 @@ class CNY2020 {
   
   play (timeStep) {
     
-    
-    if (this.mode === MODES.TILES_MOVING) {
-      this.transitionCounter = (this.transitionCounter + timeStep);
+    if (this.isTileMoving) {
+      this.tileMovingCounter = (this.tileMovingCounter + timeStep);
       
-      if (this.transitionCounter > this.transitionDuration) {
-        this.mode = MODES.IDLE;
-        this.transitionCounter = 0;
+      if (this.tileMovingCounter > this.tileMovingDuration) {
+        this.isTileMoving = false;
+        this.tileMovingCounter = 0;
       }
     }
   }
@@ -100,7 +99,7 @@ class CNY2020 {
     
     this.print(`Clicked on COL ${x} ROW ${y}`);
     
-    this.moveTile(x, y)
+    this.moveTile(x, y);
   }
   
   onPointerUp (e) {
@@ -108,7 +107,7 @@ class CNY2020 {
   }
   
   moveTile (x, y) {
-    if (this.mode !== MODES.IDLE) return;
+    if (this.isTileMoving) return;
     
     const tile = this.grid.getTile(x, y);
     
@@ -123,26 +122,26 @@ class CNY2020 {
       this.grid.tiles[y][x + 1] = tile;
       this.grid.tiles[y][x] = null;
       
-      this.modes = MODES.TILES_MOVING;
-      this.transitionCounter = 0;
+      this.isTileMoving = true;
+      this.tileMovingCounter = 0;
     } else if (!wTile && (x - 1) >= 0) {
       this.grid.tiles[y][x - 1] = tile;
       this.grid.tiles[y][x] = null;
       
-      this.modes = MODES.TILES_MOVING;
-      this.transitionCounter = 0;
+      this.isTileMoving = true;
+      this.tileMovingCounter = 0;
     } else if (!sTile && (y + 1) < this.grid.height) {
       this.grid.tiles[y + 1][x] = tile;
       this.grid.tiles[y][x] = null;
       
-      this.modes = MODES.TILES_MOVING;
-      this.transitionCounter = 0;
+      this.isTileMoving = true;
+      this.tileMovingCounter = 0;
     } else if (!nTile && (y - 1) >= 0) {
       this.grid.tiles[y - 1][x] = tile;
       this.grid.tiles[y][x] = null;
       
-      this.modes = MODES.TILES_MOVING;
-      this.transitionCounter = 0;
+      this.isTileMoving = true;
+      this.tileMovingCounter = 0;
     }
   }
 };

@@ -1,3 +1,5 @@
+import { TILE_SIZE } from './constants';
+
 class Tile {
   constructor (config) {
     this.south = (config && config.south) || false;
@@ -7,6 +9,39 @@ class Tile {
     
     this.goal = !!(config && config.goal) || false;
     this.canMove = !!(config && config.canMove) || true;
+  }
+  
+  paint (canvas2d, x, y, offsetX = 0, offsetY = 0) {
+    canvas2d.fillStyle = '#844';
+    canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
+
+    // canvas2d.lineCap = "round";
+    canvas2d.lineWidth = 8;
+    canvas2d.strokeStyle = '#fff';
+    if (this.east) {
+      canvas2d.beginPath();
+      canvas2d.moveTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.lineTo((x + 1) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.stroke();
+    }
+    if (this.west) {
+      canvas2d.beginPath();
+      canvas2d.moveTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.lineTo((x + 0) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.stroke();
+    }
+    if (this.south) {
+      canvas2d.beginPath();
+      canvas2d.moveTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 1) * TILE_SIZE + offsetY);
+      canvas2d.stroke();
+    }
+    if (this.north) {
+      canvas2d.beginPath();
+      canvas2d.moveTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
+      canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0) * TILE_SIZE + offsetY);
+      canvas2d.stroke();
+    }
   }
 }
 

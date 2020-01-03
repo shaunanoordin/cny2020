@@ -40,7 +40,7 @@ class CNY2020 {
   }
   
   loadLevel () {
-    this.isTileMoving = false;
+    this.clearMovingTile();
     
     this.grid = new Grid({
       width: 3,
@@ -71,8 +71,12 @@ class CNY2020 {
       this.tileMovingCounter = (this.tileMovingCounter + timeStep);
       
       if (this.tileMovingCounter > this.tileMovingDuration) {
-        this.isTileMoving = false;
-        this.tileMovingCounter = 0;
+        
+        console.log(this.grid.movingTile, ' > ', this.grid.moveToX, this.grid.moveToY, ' > ', this.grid.tiles);
+        
+        this.grid.tiles[this.grid.moveToY][this.grid.moveToX] = this.grid.movingTile;
+        
+        this.clearMovingTile();
       }
     }
   }
@@ -119,30 +123,35 @@ class CNY2020 {
     const nTile = this.grid.getTile(x, y - 1);
     
     if (!eTile && (x + 1) < this.grid.width) {
-      this.grid.tiles[y][x + 1] = tile;
-      this.grid.tiles[y][x] = null;
-      
-      this.isTileMoving = true;
-      this.tileMovingCounter = 0;
+      this.setMovingTile(tile, x, y, x + 1, y);
     } else if (!wTile && (x - 1) >= 0) {
-      this.grid.tiles[y][x - 1] = tile;
-      this.grid.tiles[y][x] = null;
-      
-      this.isTileMoving = true;
-      this.tileMovingCounter = 0;
+      this.setMovingTile(tile, x, y, x - 1, y);
     } else if (!sTile && (y + 1) < this.grid.height) {
-      this.grid.tiles[y + 1][x] = tile;
-      this.grid.tiles[y][x] = null;
-      
-      this.isTileMoving = true;
-      this.tileMovingCounter = 0;
+      this.setMovingTile(tile, x, y, x, y + 1);
     } else if (!nTile && (y - 1) >= 0) {
-      this.grid.tiles[y - 1][x] = tile;
-      this.grid.tiles[y][x] = null;
-      
-      this.isTileMoving = true;
-      this.tileMovingCounter = 0;
+      this.setMovingTile(tile, x, y, x, y - 1);
     }
+  }
+  
+  setMovingTile (tile, fromX, fromY, toX, toY) {
+    this.grid.tiles[toY][toX] = null;
+    this.grid.tiles[fromY][fromX] = null;
+    
+    this.grid.movingTile = tile;
+    this.grid.moveToX = toX;
+    this.grid.moveToY = toY;
+    this.grid.moveFromY = fromX;
+    this.grid.moveFromY = fromY;
+    
+    this.isTileMoving = true;
+    this.tileMovingCounter = 0;
+  }
+  
+  clearMovingTile () {
+    this.grid.movingTile = null;
+    
+    this.isTileMoving = false;
+    this.tileMovingCounter = 0;
   }
 };
 

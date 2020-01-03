@@ -9,6 +9,10 @@ class Grid {
     this.tiles = (config && config.tiles) || [[ null ]];
     
     this.movingTile = null;
+    this.moveFromX = null;
+    this.moveFromY = null;
+    this.moveToX = null;
+    this.moveToY = null;
     
     this.leftPadding = Math.floor((GRID_WIDTH - this.width) / 2);
     this.rightPadding = Math.ceil((GRID_WIDTH - this.width) / 2);
@@ -41,7 +45,6 @@ class Grid {
       
       const xIndex = x - this.leftPadding;
       const yIndex = y - this.topPadding;
-
       const tile = this.getTile(xIndex, yIndex)
       
       if (!tile || tile === this.movingTile) {

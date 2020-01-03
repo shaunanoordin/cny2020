@@ -13,6 +13,7 @@ class Grid {
     this.moveFromY = null;
     this.moveToX = null;
     this.moveToY = null;
+    this.movePercentage = 0;
     
     this.leftPadding = Math.floor((GRID_WIDTH - this.width) / 2);
     this.rightPadding = Math.ceil((GRID_WIDTH - this.width) / 2);
@@ -28,7 +29,7 @@ class Grid {
       }
     }
     
-    this.paint_movingTile();
+    this.paint_movingTile(canvas2d);
   }
   
   paint_staticTile (canvas2d, x, y) {
@@ -64,6 +65,17 @@ class Grid {
     
     const tile = this.movingTile;
     if (!tile) return;
+    
+    const offsetX = TILE_SIZE * this.movePercentage * (this.moveToX - this.moveFromX);
+    const offsetY = TILE_SIZE * this.movePercentage * (this.moveToY - this.moveFromY);
+    
+    tile.paint(
+      canvas2d,
+      this.moveFromX + this.leftPadding,
+      this.moveFromY + this.topPadding,
+      offsetX,
+      offsetY
+    );
     
   }
   

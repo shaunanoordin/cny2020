@@ -19,7 +19,7 @@ class CNY2020 {
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     
     this.tileMovingCounter = 0;
-    this.tileMovingDuration = 1000;
+    this.tileMovingDuration = 100;
     this.isTileMoving = false;
     
     this.grid = new Grid();
@@ -69,6 +69,7 @@ class CNY2020 {
     
     if (this.isTileMoving) {
       this.tileMovingCounter = (this.tileMovingCounter + timeStep);
+      this.grid.movePercentage = this.tileMovingCounter / this.tileMovingDuration;
       
       if (this.tileMovingCounter > this.tileMovingDuration) {
         
@@ -140,8 +141,9 @@ class CNY2020 {
     this.grid.movingTile = tile;
     this.grid.moveToX = toX;
     this.grid.moveToY = toY;
-    this.grid.moveFromY = fromX;
+    this.grid.moveFromX = fromX;
     this.grid.moveFromY = fromY;
+    this.grid.movePercentage = 0;
     
     this.isTileMoving = true;
     this.tileMovingCounter = 0;

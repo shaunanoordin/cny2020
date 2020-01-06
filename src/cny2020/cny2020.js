@@ -1,4 +1,4 @@
-import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants';
+import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, DIRECTIONS } from './constants';
 import Grid from './grid';
 import Tile from './tile';
 
@@ -62,6 +62,11 @@ class CNY2020 {
           new Tile({ west: true, east: true, }),
         ],
       ],
+      rat: {
+        x: 2,
+        y: 2,
+        direction: DIRECTIONS.EAST,
+      },
     })
   }
   
@@ -105,10 +110,6 @@ class CNY2020 {
     this.print(`Clicked on COL ${x} ROW ${y}`);
     
     this.moveTile(x, y);
-  }
-  
-  onPointerUp (e) {
-    
   }
   
   moveTile (x, y) {

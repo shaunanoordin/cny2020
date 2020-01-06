@@ -1,10 +1,14 @@
 import Tile from './tile';
+import Rat from './rat';
 import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants';
 
 class Grid {
   constructor (config) {
     this.width = (config && config.width) || 1;
     this.height = (config && config.height) || 1;
+    
+    const ratConfig = (config && config.rat) || {};
+    this.rat = new Rat(ratConfig);
     
     this.tiles = (config && config.tiles) || [[ null ]];
     
@@ -30,6 +34,8 @@ class Grid {
     }
     
     this.paint_movingTile(canvas2d);
+    
+    this.rat.paint(canvas2d, this.leftPadding, this.topPadding);
   }
   
   paint_staticTile (canvas2d, x, y) {

@@ -31,8 +31,36 @@ export function getLevel(level) {
           direction: DIRECTIONS.SOUTH,
         },
       });
+      
+    case 1:
+      return new Grid({
+        width: 3,
+        height: 3,
+        tiles: [
+          [
+            new Tile({ south: true, east: true, }),
+            new Tile({ south: true, west: true, }),
+            null,
+          ],
+          [
+            new Tile({ north: true, east: true, }),
+            new Tile({ north: true, west: true, }),
+            new Tile({ }),
+          ],
+          [
+            new Tile({ north: true, east: true, }),
+            new Tile({ west: true, south: true, }),
+            new Tile({ west: true, goal: true, }),
+          ],
+        ],
+        rat: {
+          x: 0,
+          y: 0,
+          direction: DIRECTIONS.SOUTH,
+        },
+      });
     
-    case 1:  // TNC's level
+    case 370:  // TNC's level
       return new Grid({
         width: 5,
         height: 5,

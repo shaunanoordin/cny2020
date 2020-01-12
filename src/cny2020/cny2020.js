@@ -52,6 +52,7 @@ class CNY2020 {
     this.ratMovingCounter = 0;
     this.isWinScreenShowing = false;
     
+    this.html.button.textContent = 'Reset';
     this.grid = getLevel(this.level);
   }
   
@@ -126,13 +127,10 @@ class CNY2020 {
   }
   
   onButtonClick (e) {
-    console.log(this.isWinScreenShowing, this.level, getLevel(this.level))
-    
     if (this.isWinScreenShowing) {
       // If the Win Screen is showing, then the button should activate the next level, IF it exists.
       
       const nextLevelExists = !!getLevel(this.level);
-      
       if (nextLevelExists) this.loadLevel();
     } else {
       // Restart level
@@ -196,13 +194,16 @@ class CNY2020 {
   }
   
   doRatLogic () {
+    if (!this.grid || !this.grid.rat) return;
     const rat = this.grid.rat;
     
     const curTile = this.grid.getTile(rat.x, rat.y);
+    if (!curTile) return;
     
     // Figure out where the rat needs to move to next
     // The rat moves forward whenever possible, then turns right, or left, in that order.
     // The rat never moves backwards
+    
     switch (rat.direction) {
       case DIRECTIONS.SOUTH:
         if (curTile.south) { rat.direction = DIRECTIONS.SOUTH; break; }

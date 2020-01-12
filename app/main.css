@@ -76,6 +76,7 @@ table th {
   margin: 0 auto;
   max-width: 100vw;
   max-height: 80vh;
+  cursor: pointer;
 }
 #app > main #controls {
   border: 2px solid black;

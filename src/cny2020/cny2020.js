@@ -28,7 +28,7 @@ class CNY2020 {
     
     this.level = 0;
     this.grid = new Grid();
-    this.loadLevel(this.level);
+    this.loadLevel();
     
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
@@ -44,11 +44,11 @@ class CNY2020 {
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
   }
   
-  loadLevel (levelIndex) {
+  loadLevel () {
     this.clearMovingTile();
     this.ratMovingCounter = 0;
     
-    this.grid = getLevel(levelIndex);
+    this.grid = getLevel(this.level);
   }
   
   play (timeStep) {
@@ -86,14 +86,11 @@ class CNY2020 {
       // Are we at the exit goal yet?
       const tile = this.grid.getTile(rat.x, rat.y);
       if (tile && tile.goal) {
-        console.log('WIN');
-        
-        // TODO
+        this.doWin();
+      } else {
+        // Otherwise, decide what to do with the rat.      
+        this.doRatLogic();
       }
-      
-      // Otherwise, decide what to do with the rat.
-      
-      this.doRatLogic();
     }
     
   }
@@ -113,7 +110,7 @@ class CNY2020 {
   }
   
   onButtonClick (e) {
-    this.loadLevel(this.level);
+    this.loadLevel();
   }
   
   moveTile (x, y) {

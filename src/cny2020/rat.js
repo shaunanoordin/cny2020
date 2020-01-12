@@ -4,7 +4,7 @@ class Rat {
   constructor (config) {
     this.x = (config && config.x) || 0;
     this.y = (config && config.y) || 0;
-    this.direction = (config && config.direction) || DIRECTIONS.EAST;
+    this.direction = (config && config.direction) || DIRECTIONS.SOUTH;
     
     this.toX = null;
     this.toY = null;

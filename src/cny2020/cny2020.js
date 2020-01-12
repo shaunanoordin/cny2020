@@ -1,4 +1,5 @@
 import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, DIRECTIONS } from './constants';
+import { getLevel } from './levels';
 import Grid from './grid';
 import Tile from './tile';
 
@@ -7,24 +8,27 @@ class CNY2020 {
     this.html = {
       app: document.getElementById('app'),
       canvas: document.getElementById('canvas'),
-      console: document.getElementById('console'),
+      button: document.getElementById('button'),
     };
     this.canvas2d = this.html.canvas.getContext('2d');
     this.canvasWidth = TILE_SIZE * GRID_WIDTH;
     this.canvasHeight = TILE_SIZE * GRID_HEIGHT;
-    this.messages = [];
     
     this.html.canvas.width = this.canvasWidth;
     this.html.canvas.height = this.canvasHeight;
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
+    this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;
     this.isTileMoving = false;
     
+    this.isWinScreenShowing = false;
+    
     this.ratMovingCounter = 0;
     this.ratMovingDuration = 1000;
     
+    this.level = 0;
     this.grid = new Grid();
     this.loadLevel();
     
@@ -43,37 +47,19 @@ class CNY2020 {
   }
   
   loadLevel () {
+    // Reset counters, etc
     this.clearMovingTile();
+    this.ratMovingCounter = 0;
+    this.isWinScreenShowing = false;
     
-    this.grid = new Grid({
-      width: 3,
-      height: 3,
-      tiles: [
-        [
-          new Tile({ south: true, }),
-          new Tile({ }),
-          new Tile({ south: true, goal: true }),
-        ],
-        [
-          null,
-          new Tile({ south: true, north: true, }),
-          new Tile({ south: true, east: true, }),
-        ],
-        [
-          new Tile({ north: true, east: true, }),
-          new Tile({ west: true, north: true, }),
-          new Tile({ west: true, north: true, }),
-        ],
-      ],
-      rat: {
-        x: 0,
-        y: 0,
-        direction: DIRECTIONS.SOUTH,
-      },
-    })
+    this.html.button.textContent = 'Reset';
+    this.grid = getLevel(this.level);
   }
   
   play (timeStep) {
+    
+    // Don't do anything if the Win Screen is showing.
+    if (this.isWinScreenShowing) return;
     
     if (this.isTileMoving) {
       // If there is an active moving tile, move it.
@@ -108,14 +94,11 @@ class CNY2020 {
       // Are we at the exit goal yet?
       const tile = this.grid.getTile(rat.x, rat.y);
       if (tile && tile.goal) {
-        console.log('WIN');
-        
-        // TODO
+        this.doWin();
+      } else {
+        // Otherwise, decide what to do with the rat.      
+        this.doRatLogic();
       }
-      
-      // Otherwise, decide what to do with the rat.
-      
-      this.doRatLogic();
     }
     
   }
@@ -123,16 +106,16 @@ class CNY2020 {
   paint () {
     this.canvas2d.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     
-    this.grid.paint(this.canvas2d);
+    if (this.isWinScreenShowing) {
+      this.paintWinScreen();
+    } else {
+      this.grid.paint(this.canvas2d);
+    }
   }
   
-  print (text) {
-    this.messages.unshift(text);
-    while (this.messages.length > 3) {
-      this.messages.pop();
-    }
-    
-    this.html.console.textContent = this.messages.join('\n');
+  paintWinScreen () {
+    this.fillStyle = '#c44';
+    this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
   
   onPointerDown (e) {    
@@ -140,9 +123,20 @@ class CNY2020 {
     const x = Math.floor(coords.x / TILE_SIZE) - this.grid.leftPadding;
     const y = Math.floor(coords.y / TILE_SIZE) - this.grid.topPadding;
     
-    this.print(`Clicked on COL ${x} ROW ${y}`);
-    
     this.moveTile(x, y);
+  }
+  
+  onButtonClick (e) {
+    if (this.isWinScreenShowing) {
+      // If the Win Screen is showing, then the button should activate the next level, IF it exists.
+      
+      const nextLevelExists = !!getLevel(this.level);
+      if (nextLevelExists) this.loadLevel();
+    } else {
+      // Restart level
+      
+      this.loadLevel();
+    }
   }
   
   moveTile (x, y) {
@@ -152,7 +146,7 @@ class CNY2020 {
     const tile = this.grid.getTile(x, y);
     const rat = this.grid.rat;
     
-    if (!tile) return;
+    if (!tile || !tile.canMove) return;
     
     // If the rat is moving to/from a tile, that tile can't be moved.
     const isRatOnTile = (rat.x === x && rat.y === y)
@@ -200,13 +194,16 @@ class CNY2020 {
   }
   
   doRatLogic () {
+    if (!this.grid || !this.grid.rat) return;
     const rat = this.grid.rat;
     
     const curTile = this.grid.getTile(rat.x, rat.y);
+    if (!curTile) return;
     
     // Figure out where the rat needs to move to next
     // The rat moves forward whenever possible, then turns right, or left, in that order.
     // The rat never moves backwards
+    
     switch (rat.direction) {
       case DIRECTIONS.SOUTH:
         if (curTile.south) { rat.direction = DIRECTIONS.SOUTH; break; }
@@ -256,6 +253,19 @@ class CNY2020 {
         this.ratMovingCounter = 0;
       }
     } 
+  }
+  
+  doWin () {
+    this.isWinScreenShowing = true;
+    
+    this.level++;
+    const nextLevelExists = !!getLevel(this.level);
+    
+    if (nextLevelExists) {
+      this.html.button.textContent = 'Next Level!';
+    } else {
+      this.html.button.textContent = 'GONG XI FA CAI! You\'ve cleared all the levels!';
+    }
   }
 };
 

@@ -66,17 +66,32 @@ table th {
 
 #app > main {
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   background: #fff;
 }
 #app > main #canvas {
+  flex: 0 0 auto;
   display: block;
   margin: 0 auto;
   max-width: 100vw;
   max-height: 80vh;
+  cursor: pointer;
 }
-#app > main #console {
-  display: block;
-  white-space: pre;
+#app > main #controls {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+}
+#app > main #button {
+  border: 1px solid #ccc;
+  color: #fff;
+  border-radius: 1em;
+  background: #c44;
+  padding: 0.5em 1em;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -79,17 +79,33 @@ table {
 
 #app > main {
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   background: $white;
   
   #canvas {
+    flex: 0 0 auto;
     display: block;
     margin: 0 auto;
     max-width: 100vw;
     max-height: 80vh;
+    cursor: pointer;
   }
   
-  #console {
-    display: block;
-    white-space: pre;
+  #controls {
+    flex: 1 1 auto;
+    display: flex;
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #button {
+    border: 1px solid $light-grey;
+    color: $white;
+    border-radius: 1em;
+    background: $primary;
+    padding: 0.5em 1em;
+    cursor: pointer;
   }
 }

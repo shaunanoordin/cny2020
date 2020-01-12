@@ -65,7 +65,7 @@ class CNY2020 {
       rat: {
         x: 2,
         y: 2,
-        direction: DIRECTIONS.EAST,
+        direction: DIRECTIONS.WEST,
       },
     })
   }
@@ -116,8 +116,14 @@ class CNY2020 {
     if (this.isTileMoving) return;
     
     const tile = this.grid.getTile(x, y);
+    const rat = this.grid.rat;
     
     if (!tile) return;
+    
+    const isRatOnTile = (rat.x === x && rat.y === y)
+      || (rat.toX === x && rat.toY === y && rat.toX !== null && rat.toY !== null);
+    
+    if (isRatOnTile) return;
     
     const eTile = this.grid.getTile(x + 1, y);
     const wTile = this.grid.getTile(x - 1, y);

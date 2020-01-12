@@ -6,15 +6,15 @@ class Rat {
     this.y = (config && config.y) || 0;
     this.direction = (config && config.direction) || DIRECTIONS.EAST;
     
-    this.fromX = 0;
-    this.fromY = 0;
+    this.toX = null;
+    this.toY = null;
     this.movePercentage = 0;
   }
   
   paint (canvas2d, leftPadding, topPadding) {
     // TODO
-    const offsetX = (this.x - this.fromX) * this.movePercentage;
-    const offsetY = (this.y - this.fromY) * this.movePercentage;
+    const offsetX = (this.toX - this.x) * this.movePercentage;
+    const offsetY = (this.toY - this.y) * this.movePercentage;
     const x = this.x + offsetX + leftPadding + 0.5;
     const y = this.y + offsetY + topPadding + 0.5;
     

@@ -197,37 +197,34 @@ class CNY2020 {
     const curTile = this.grid.getTile(rat.x, rat.y);
     
     // Figure out where the rat needs to move to next
+    // The rat moves forward whenever possible, then turns right, or left, in that order.
+    // The rat never moves backwards
     switch (rat.direction) {
       case DIRECTIONS.SOUTH:
-        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
-        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
-        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
-        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        if (curTile.south) { rat.direction = DIRECTIONS.SOUTH; break; }
+        if (curTile.west) { rat.direction = DIRECTIONS.WEST; break; }
+        if (curTile.east) { rat.direction = DIRECTIONS.EAST; break; }
         break;
       case DIRECTIONS.EAST:
-        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
-        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
-        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
-        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        if (curTile.east) { rat.direction = DIRECTIONS.EAST; break; }
+        if (curTile.south) { rat.direction = DIRECTIONS.SOUTH; break; }
+        if (curTile.north) { rat.direction = DIRECTIONS.NORTH; break; }
         break;
       case DIRECTIONS.NORTH:
-        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
-        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
-        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
-        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
+        if (curTile.north) { rat.direction = DIRECTIONS.NORTH; break; }
+        if (curTile.east) { rat.direction = DIRECTIONS.EAST; break; }
+        if (curTile.west) { rat.direction = DIRECTIONS.WEST; break; }
         break;
       case DIRECTIONS.WEST:
-        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
-        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
-        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
-        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
+        if (curTile.west) { rat.direction = DIRECTIONS.WEST; break; }
+        if (curTile.north) { rat.direction = DIRECTIONS.NORTH; break; }
+        if (curTile.south) { rat.direction = DIRECTIONS.SOUTH; break; }
         break;
     }
     
     let nextTile = this.grid.getTile(rat.x, rat.y, rat.direction);
     
     // Now, can the rat move forward?
-    
     if (nextTile) {
       if (rat.direction === DIRECTIONS.SOUTH && nextTile.north) {
         rat.toX = rat.x;

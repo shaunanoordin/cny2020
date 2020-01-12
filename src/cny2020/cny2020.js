@@ -23,6 +23,8 @@ class CNY2020 {
     this.tileMovingDuration = 100;
     this.isTileMoving = false;
     
+    this.isWinScreenShowing = false;
+    
     this.ratMovingCounter = 0;
     this.ratMovingDuration = 1000;
     
@@ -45,13 +47,18 @@ class CNY2020 {
   }
   
   loadLevel () {
+    // Reset counters, etc
     this.clearMovingTile();
     this.ratMovingCounter = 0;
+    this.isWinScreenShowing = false;
     
     this.grid = getLevel(this.level);
   }
   
   play (timeStep) {
+    
+    // Don't do anything if the Win Screen is showing.
+    if (this.isWinScreenShowing) return;
     
     if (this.isTileMoving) {
       // If there is an active moving tile, move it.
@@ -98,7 +105,16 @@ class CNY2020 {
   paint () {
     this.canvas2d.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     
-    this.grid.paint(this.canvas2d);
+    if (this.isWinScreenShowing) {
+      this.paintWinScreen();
+    } else {
+      this.grid.paint(this.canvas2d);
+    }
+  }
+  
+  paintWinScreen () {
+    this.fillStyle = '#c44';
+    this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
   
   onPointerDown (e) {    
@@ -110,7 +126,19 @@ class CNY2020 {
   }
   
   onButtonClick (e) {
-    this.loadLevel();
+    console.log(this.isWinScreenShowing, this.level, getLevel(this.level))
+    
+    if (this.isWinScreenShowing) {
+      // If the Win Screen is showing, then the button should activate the next level, IF it exists.
+      
+      const nextLevelExists = !!getLevel(this.level);
+      
+      if (nextLevelExists) this.loadLevel();
+    } else {
+      // Restart level
+      
+      this.loadLevel();
+    }
   }
   
   moveTile (x, y) {
@@ -227,7 +255,16 @@ class CNY2020 {
   }
   
   doWin () {
+    this.isWinScreenShowing = true;
     
+    this.level++;
+    const nextLevelExists = !!getLevel(this.level);
+    
+    if (nextLevelExists) {
+      this.html.button.textContent = 'Next Level!';
+    } else {
+      this.html.button.textContent = 'GONG XI FA CAI! You\'ve cleared all the levels!';
+    }
   }
 };
 

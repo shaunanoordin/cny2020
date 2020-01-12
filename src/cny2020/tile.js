@@ -42,6 +42,29 @@ class Tile {
       canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0) * TILE_SIZE + offsetY);
       canvas2d.stroke();
     }
+    
+    if (this.north || this.south || this.east || this.west) {
+      canvas2d.fillStyle = '#fff';
+      canvas2d.beginPath();
+      canvas2d.arc(
+        (x + 0.5) * TILE_SIZE,
+        (y + 0.5) * TILE_SIZE,
+        4,
+        0, 2 * Math.PI);
+      canvas2d.fill();
+    }
+    
+    if (this.goal) {
+      canvas2d.strokeStyle = '#fff';
+      canvas2d.lineWidth = 4;
+      canvas2d.beginPath();
+      canvas2d.arc(
+        (x + 0.5) * TILE_SIZE,
+        (y + 0.5) * TILE_SIZE,
+        TILE_SIZE / 3,
+        0, 2 * Math.PI);
+      canvas2d.stroke();
+    }
   }
 }
 

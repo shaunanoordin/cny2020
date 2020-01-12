@@ -146,7 +146,7 @@ class CNY2020 {
     const tile = this.grid.getTile(x, y);
     const rat = this.grid.rat;
     
-    if (!tile) return;
+    if (!tile || !tile.canMove) return;
     
     // If the rat is moving to/from a tile, that tile can't be moved.
     const isRatOnTile = (rat.x === x && rat.y === y)

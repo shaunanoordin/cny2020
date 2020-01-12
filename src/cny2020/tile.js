@@ -8,11 +8,14 @@ class Tile {
     this.west = (config && config.west) || false;
     
     this.goal = !!(config && config.goal) || false;
-    this.canMove = !!(config && config.canMove) || true;
+    this.canMove = !!(config && config.hasOwnProperty('canMove'))
+      ? config.canMove
+      : true;
   }
   
   paint (canvas2d, x, y, offsetX = 0, offsetY = 0) {
-    canvas2d.fillStyle = '#844';
+    canvas2d.fillStyle = '#a44';
+    if (!this.canMove) canvas2d.fillStyle = '#654';
     canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
 
     // canvas2d.lineCap = "round";

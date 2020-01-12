@@ -195,7 +195,63 @@ class CNY2020 {
     const rat = this.grid.rat;
     
     const curTile = this.grid.getTile(rat.x, rat.y);
+    
+    // Figure out where the rat needs to move to next
+    switch (rat.direction) {
+      case DIRECTIONS.SOUTH:
+        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
+        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
+        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
+        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        break;
+      case DIRECTIONS.EAST:
+        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
+        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
+        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
+        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        break;
+      case DIRECTIONS.NORTH:
+        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
+        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
+        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
+        break;
+      case DIRECTIONS.WEST:
+        if (curTile.west) rat.direction = DIRECTIONS.WEST; break;
+        if (curTile.south) rat.direction = DIRECTIONS.SOUTH; break;
+        if (curTile.east) rat.direction = DIRECTIONS.EAST; break;
+        if (curTile.north) rat.direction = DIRECTIONS.NORTH; break;
+        break;
+    }
+    
     let nextTile = this.grid.getTile(rat.x, rat.y, rat.direction);
+    
+    // Now, can the rat move forward?
+    
+    if (nextTile) {
+      if (rat.direction === DIRECTIONS.SOUTH && nextTile.north) {
+        rat.toX = rat.x;
+        rat.toY = rat.y + 1;
+        rat.movePercentage = 0;
+        this.ratMovingCounter = 0;
+      } else if (rat.direction === DIRECTIONS.EAST && nextTile.west) {
+        rat.toX = rat.x + 1;
+        rat.toY = rat.y;
+        rat.movePercentage = 0;
+        this.ratMovingCounter = 0;
+      } else if (rat.direction === DIRECTIONS.NORTH && nextTile.south) {
+        rat.toX = rat.x;
+        rat.toY = rat.y - 1;
+        rat.movePercentage = 0;
+        this.ratMovingCounter = 0;
+      } else if (rat.direction === DIRECTIONS.WEST && nextTile.east) {
+        rat.toX = rat.x - 1;
+        rat.toY = rat.y;
+        rat.movePercentage = 0;
+        this.ratMovingCounter = 0;
+      }
+    }
+    
     
     // TODO 
   }

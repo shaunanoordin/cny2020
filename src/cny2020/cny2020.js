@@ -1,4 +1,5 @@
 import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, DIRECTIONS } from './constants';
+import { getLevel } from './levels';
 import Grid from './grid';
 import Tile from './tile';
 
@@ -7,16 +8,16 @@ class CNY2020 {
     this.html = {
       app: document.getElementById('app'),
       canvas: document.getElementById('canvas'),
-      console: document.getElementById('console'),
+      button: document.getElementById('button'),
     };
     this.canvas2d = this.html.canvas.getContext('2d');
     this.canvasWidth = TILE_SIZE * GRID_WIDTH;
     this.canvasHeight = TILE_SIZE * GRID_HEIGHT;
-    this.messages = [];
     
     this.html.canvas.width = this.canvasWidth;
     this.html.canvas.height = this.canvasHeight;
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
+    this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;
@@ -25,8 +26,9 @@ class CNY2020 {
     this.ratMovingCounter = 0;
     this.ratMovingDuration = 1000;
     
+    this.level = 0;
     this.grid = new Grid();
-    this.loadLevel();
+    this.loadLevel(this.level);
     
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
@@ -42,35 +44,11 @@ class CNY2020 {
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
   }
   
-  loadLevel () {
+  loadLevel (levelIndex) {
     this.clearMovingTile();
+    this.ratMovingCounter = 0;
     
-    this.grid = new Grid({
-      width: 3,
-      height: 3,
-      tiles: [
-        [
-          new Tile({ south: true, }),
-          new Tile({ }),
-          new Tile({ south: true, goal: true }),
-        ],
-        [
-          null,
-          new Tile({ south: true, north: true, }),
-          new Tile({ south: true, east: true, }),
-        ],
-        [
-          new Tile({ north: true, east: true, }),
-          new Tile({ west: true, north: true, }),
-          new Tile({ west: true, north: true, }),
-        ],
-      ],
-      rat: {
-        x: 0,
-        y: 0,
-        direction: DIRECTIONS.SOUTH,
-      },
-    })
+    this.grid = getLevel(levelIndex);
   }
   
   play (timeStep) {
@@ -126,23 +104,16 @@ class CNY2020 {
     this.grid.paint(this.canvas2d);
   }
   
-  print (text) {
-    this.messages.unshift(text);
-    while (this.messages.length > 3) {
-      this.messages.pop();
-    }
-    
-    this.html.console.textContent = this.messages.join('\n');
-  }
-  
   onPointerDown (e) {    
     const coords = getEventCoords(e, this.html.canvas);
     const x = Math.floor(coords.x / TILE_SIZE) - this.grid.leftPadding;
     const y = Math.floor(coords.y / TILE_SIZE) - this.grid.topPadding;
     
-    this.print(`Clicked on COL ${x} ROW ${y}`);
-    
     this.moveTile(x, y);
+  }
+  
+  onButtonClick (e) {
+    this.loadLevel(this.level);
   }
   
   moveTile (x, y) {
@@ -256,6 +227,10 @@ class CNY2020 {
         this.ratMovingCounter = 0;
       }
     } 
+  }
+  
+  doWin () {
+    
   }
 };
 

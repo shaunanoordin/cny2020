@@ -105,6 +105,14 @@ class CNY2020 {
       }
     
     } else {
+      // Are we at the exit goal yet?
+      const tile = this.grid.getTile(rat.x, rat.y);
+      if (tile && tile.goal) {
+        console.log('WIN');
+        
+        // TODO
+      }
+      
       // Otherwise, decide what to do with the rat.
       
       this.doRatLogic();
@@ -247,10 +255,7 @@ class CNY2020 {
         rat.movePercentage = 0;
         this.ratMovingCounter = 0;
       }
-    }
-    
-    
-    // TODO 
+    } 
   }
 };
 

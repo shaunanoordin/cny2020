@@ -47,8 +47,8 @@ class Tile {
       canvas2d.fillStyle = '#fff';
       canvas2d.beginPath();
       canvas2d.arc(
-        (x + 0.5) * TILE_SIZE,
-        (y + 0.5) * TILE_SIZE,
+        (x + 0.5) * TILE_SIZE + offsetX,
+        (y + 0.5) * TILE_SIZE + offsetY,
         4,
         0, 2 * Math.PI);
       canvas2d.fill();
@@ -59,8 +59,8 @@ class Tile {
       canvas2d.lineWidth = 4;
       canvas2d.beginPath();
       canvas2d.arc(
-        (x + 0.5) * TILE_SIZE,
-        (y + 0.5) * TILE_SIZE,
+        (x + 0.5) * TILE_SIZE + offsetX,
+        (y + 0.5) * TILE_SIZE + offsetY,
         TILE_SIZE / 3,
         0, 2 * Math.PI);
       canvas2d.stroke();

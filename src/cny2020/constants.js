@@ -7,3 +7,4 @@ export const DIRECTIONS = {
   NORTH: 2,
   WEST: 3,
 }
+export const NO_DIRECTION = -1;

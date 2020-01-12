@@ -1,4 +1,4 @@
-import { TILE_SIZE } from './constants';
+import { TILE_SIZE, DIRECTIONS } from './constants';
 
 class Tile {
   constructor (config) {

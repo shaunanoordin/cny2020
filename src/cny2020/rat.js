@@ -31,7 +31,6 @@ class Rat {
     canvas2d.lineWidth = 4;
     canvas2d.beginPath();
     canvas2d.moveTo(x * TILE_SIZE, y * TILE_SIZE);
-    console.log(this.direction);
     switch (this.direction) {
       case DIRECTIONS.SOUTH:
         canvas2d.lineTo(x * TILE_SIZE, (y + 0.3) * TILE_SIZE);

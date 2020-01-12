@@ -1,4 +1,4 @@
-import { TILE_SIZE } from './constants';
+import { TILE_SIZE, DIRECTIONS } from './constants';
 
 class Tile {
   constructor (config) {
@@ -40,6 +40,29 @@ class Tile {
       canvas2d.beginPath();
       canvas2d.moveTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0.5) * TILE_SIZE + offsetY);
       canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0) * TILE_SIZE + offsetY);
+      canvas2d.stroke();
+    }
+    
+    if (this.north || this.south || this.east || this.west) {
+      canvas2d.fillStyle = '#fff';
+      canvas2d.beginPath();
+      canvas2d.arc(
+        (x + 0.5) * TILE_SIZE + offsetX,
+        (y + 0.5) * TILE_SIZE + offsetY,
+        4,
+        0, 2 * Math.PI);
+      canvas2d.fill();
+    }
+    
+    if (this.goal) {
+      canvas2d.strokeStyle = '#fff';
+      canvas2d.lineWidth = 4;
+      canvas2d.beginPath();
+      canvas2d.arc(
+        (x + 0.5) * TILE_SIZE + offsetX,
+        (y + 0.5) * TILE_SIZE + offsetY,
+        TILE_SIZE / 3,
+        0, 2 * Math.PI);
       canvas2d.stroke();
     }
   }

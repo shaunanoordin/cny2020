@@ -1,10 +1,14 @@
 import Tile from './tile';
-import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT } from './constants';
+import Rat from './rat';
+import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, DIRECTIONS, NO_DIRECTION } from './constants';
 
 class Grid {
   constructor (config) {
     this.width = (config && config.width) || 1;
     this.height = (config && config.height) || 1;
+    
+    const ratConfig = (config && config.rat) || {};
+    this.rat = new Rat(ratConfig);
     
     this.tiles = (config && config.tiles) || [[ null ]];
     
@@ -30,6 +34,8 @@ class Grid {
     }
     
     this.paint_movingTile(canvas2d);
+    
+    this.rat.paint(canvas2d, this.leftPadding, this.topPadding);
   }
   
   paint_staticTile (canvas2d, x, y) {
@@ -79,9 +85,30 @@ class Grid {
     
   }
   
-  getTile (x, y) {
-    return (this.tiles && this.tiles[y] && this.tiles[y][x])
-      ? this.tiles[y][x]
+  getTile (x, y, direction = NO_DIRECTION) {
+    let offsetX = 0;
+    let offsetY = 0;
+    
+    switch (direction) {
+      case DIRECTIONS.SOUTH:
+        offsetY = 1;
+        break;
+      case DIRECTIONS.EAST:
+        offsetX = 1;
+        break;
+      case DIRECTIONS.NORTH:
+        offsetY = -1;
+        break;
+      case DIRECTIONS.WEST:
+        offsetX = -1;
+        break;
+    }
+    
+    const actualX = x + offsetX;
+    const actualY = y + offsetY;
+    
+    return (this.tiles && this.tiles[actualY] && this.tiles[actualY][actualX])
+      ? this.tiles[actualY][actualX]
       : null;
   }
 }

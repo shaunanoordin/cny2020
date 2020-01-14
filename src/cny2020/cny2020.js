@@ -20,6 +20,9 @@ class CNY2020 {
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
+    this.animationCounter = 0;
+    this.animationDuration = 1000;
+    
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;
     this.isTileMoving = false;
@@ -93,6 +96,8 @@ class CNY2020 {
   }
   
   play (timeStep) {
+    // Update the animation counter
+    this.animationCounter = (this.animationCounter + timeStep) % this.animationDuration;
     
     // Don't do anything if the Win Screen is showing.
     if (this.isWinScreenShowing) return;
@@ -145,7 +150,8 @@ class CNY2020 {
     if (this.isWinScreenShowing) {
       this.paintWinScreen();
     } else {
-      this.grid.paint(this.canvas2d, this.assets.sprites.img, 0.0);
+      const animationPercentage = this.animationCounter / this.animationDuration;
+      this.grid.paint(this.canvas2d, this.assets.sprites.img, animationPercentage);
     }
   }
   

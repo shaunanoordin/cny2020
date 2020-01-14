@@ -13,7 +13,7 @@ class Tile {
       : true;
   }
   
-  paint (canvas2d, x, y, offsetX = 0, offsetY = 0) {
+  paint (canvas2d, spritesheet, animationPercentage, x, y, offsetX = 0, offsetY = 0) {
     canvas2d.fillStyle = '#a44';
     if (!this.canMove) canvas2d.fillStyle = '#654';
     canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
@@ -57,6 +57,7 @@ class Tile {
       canvas2d.fill();
     }
     
+    // If it's a Goal tile, draw some cheese!
     if (this.goal) {
       canvas2d.strokeStyle = '#fff';
       canvas2d.lineWidth = 4;
@@ -67,6 +68,14 @@ class Tile {
         TILE_SIZE / 3,
         0, 2 * Math.PI);
       canvas2d.stroke();
+      
+      const col = 4;
+      const row = (animationPercentage < 0.5) ? 0 : 1;
+      canvas2d.drawImage(
+        spritesheet,
+        col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE,
+        x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE
+      );
     }
   }
 }

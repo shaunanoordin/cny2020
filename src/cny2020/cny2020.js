@@ -2,6 +2,7 @@ import { TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, DIRECTIONS } from './constants';
 import { getLevel } from './levels';
 import Grid from './grid';
 import Tile from './tile';
+import { ImageAsset } from './image-asset';
 
 class CNY2020 {
   constructor () {
@@ -19,6 +20,9 @@ class CNY2020 {
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
+    this.animationCounter = 0;
+    this.animationDuration = 1000;
+    
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;
     this.isTileMoving = false;
@@ -27,6 +31,12 @@ class CNY2020 {
     
     this.ratMovingCounter = 0;
     this.ratMovingDuration = 1000;
+    
+    this.ready = false;
+    this.assets = {
+      sprites: new ImageAsset('assets/sprites.png'),
+      winScreen: new ImageAsset('assets/win-screen.png'),
+    };
     
     this.level = 0;
     this.grid = new Grid();
@@ -40,10 +50,39 @@ class CNY2020 {
     const timeStep = (this.prevTime) ? time - this.prevTime : time;
     this.prevTime = time;
     
-    this.play(timeStep);
-    this.paint();
+    if (this.ready) {
+      this.play(timeStep);
+      this.paint();
+    } else {
+      this.initialisationCheck();
+    }
     
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
+  }
+  
+  initialisationCheck () {
+    // Assets check
+    let allAssetsLoaded = true;
+    let numLoadedAssets = 0;
+    let numTotalAssets = 0;
+    Object.keys(this.assets).forEach((id) => {
+      const asset = this.assets[id];
+      allAssetsLoaded = allAssetsLoaded && asset.loaded;
+      if (asset.loaded) numLoadedAssets++;
+      numTotalAssets++;
+    });
+    
+    // Paint status
+    this.canvas2d.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.canvas2d.textAlign = 'start';
+    this.canvas2d.textBaseline = 'top';
+    this.canvas2d.fillStyle = '#ccc';
+    this.canvas2d.font = `1em monospace`
+    this.canvas2d.fillText(`Loading ${numLoadedAssets} / ${numTotalAssets} `, TILE_SIZE, TILE_SIZE);
+    
+    if (allAssetsLoaded) {
+      this.ready = true;
+    }
   }
   
   loadLevel () {
@@ -57,6 +96,8 @@ class CNY2020 {
   }
   
   play (timeStep) {
+    // Update the animation counter
+    this.animationCounter = (this.animationCounter + timeStep) % this.animationDuration;
     
     // Don't do anything if the Win Screen is showing.
     if (this.isWinScreenShowing) return;
@@ -109,13 +150,20 @@ class CNY2020 {
     if (this.isWinScreenShowing) {
       this.paintWinScreen();
     } else {
-      this.grid.paint(this.canvas2d);
+      const animationPercentage = this.animationCounter / this.animationDuration;
+      this.grid.paint(this.canvas2d, this.assets.sprites.img, animationPercentage);
     }
   }
   
   paintWinScreen () {
     this.fillStyle = '#c44';
-    this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+    // this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.canvas2d.drawImage(
+      this.assets.winScreen.img,
+      0, 0, this.canvasWidth, this.canvasHeight,
+      0, 0, this.canvasWidth, this.canvasHeight
+    );
+
   }
   
   onPointerDown (e) {    
@@ -258,6 +306,7 @@ class CNY2020 {
   doWin () {
     this.isWinScreenShowing = true;
     
+    // Prepare for the next level, if any.
     this.level++;
     const nextLevelExists = !!getLevel(this.level);
     

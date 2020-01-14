@@ -67,6 +67,14 @@ class Tile {
         TILE_SIZE / 3,
         0, 2 * Math.PI);
       canvas2d.stroke();
+      
+      const col = 4;
+      const row = 0;
+      canvas2d.drawImage(
+        spritesheet,
+        col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE,
+        x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE
+      );
     }
   }
 }

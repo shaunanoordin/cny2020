@@ -48,7 +48,7 @@ class Rat {
     }
     canvas2d.stroke();
     
-    const col = 0;
+    const col = this.direction;
     const row = 0;
     
     canvas2d.drawImage(

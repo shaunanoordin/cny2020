@@ -14,11 +14,12 @@ class Tile {
   }
   
   paint (canvas2d, spritesheet, animationPercentage, x, y, offsetX = 0, offsetY = 0) {
+    // Draw the base of the tile
     canvas2d.fillStyle = '#a44';
     if (!this.canMove) canvas2d.fillStyle = '#654';
     canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
 
-    // canvas2d.lineCap = "round";
+    // Draw the paths in the tile
     canvas2d.lineWidth = 8;
     canvas2d.strokeStyle = '#fff';
     if (this.east) {
@@ -45,7 +46,8 @@ class Tile {
       canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0) * TILE_SIZE + offsetY);
       canvas2d.stroke();
     }
-    
+        
+    // Draw the center of the paths, if this tile has any paths.
     if (this.north || this.south || this.east || this.west) {
       canvas2d.fillStyle = '#fff';
       canvas2d.beginPath();
@@ -56,6 +58,11 @@ class Tile {
         0, 2 * Math.PI);
       canvas2d.fill();
     }
+    
+    // Draw the border of the tile 
+    canvas2d.strokeStyle = '#ccc';
+    canvas2d.lineWidth = 2;
+    canvas2d.strokeRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
     
     // If it's a Goal tile, draw some cheese!
     if (this.goal) {

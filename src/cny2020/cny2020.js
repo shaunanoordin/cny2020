@@ -31,6 +31,7 @@ class CNY2020 {
     
     this.ready = false;
     this.assets = {
+      sprites: new ImageAsset('assets/sprites.png'),
       winScreen: new ImageAsset('assets/win-screen.png'),
     };
     
@@ -144,7 +145,7 @@ class CNY2020 {
     if (this.isWinScreenShowing) {
       this.paintWinScreen();
     } else {
-      this.grid.paint(this.canvas2d);
+      this.grid.paint(this.canvas2d, this.assets.sprites.img, 0.0);
     }
   }
   

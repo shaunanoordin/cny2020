@@ -25,20 +25,20 @@ class Grid {
     this.bottomPadding = Math.ceil((GRID_HEIGHT - this.height) / 2);
   }
   
-  paint (canvas2d) {
+  paint (canvas2d, spritesheet, animationPercentage) {
     
     for (let y = 0; y < GRID_HEIGHT; y++) {
       for (let x = 0; x < GRID_WIDTH; x++) {
-        this.paint_staticTile(canvas2d, x, y);
+        this.paint_staticTile(canvas2d, spritesheet, x, y);
       }
     }
     
-    this.paint_movingTile(canvas2d);
+    this.paint_movingTile(canvas2d, spritesheet);
     
-    this.rat.paint(canvas2d, this.leftPadding, this.topPadding);
+    this.rat.paint(canvas2d, spritesheet, animationPercentage, this.leftPadding, this.topPadding);
   }
   
-  paint_staticTile (canvas2d, x, y) {
+  paint_staticTile (canvas2d, spritesheet, x, y) {
     if (!(
       x >= this.leftPadding &&
       x < (GRID_WIDTH - this.rightPadding) &&
@@ -46,7 +46,7 @@ class Grid {
       y < (GRID_HEIGHT - this.bottomPadding)
     )) {
 
-      this.paint_blankTile(canvas2d, x, y);
+      this.paint_blankTile(canvas2d, spritesheet, x, y);
       
     } else {
       
@@ -57,17 +57,17 @@ class Grid {
       if (!tile || tile === this.movingTile) {
         this.paint_blankTile(canvas2d, x, y);
       } else {
-        tile.paint(canvas2d, x, y);
+        tile.paint(canvas2d, spritesheet, x, y);
       }
     }
   }
   
-  paint_blankTile (canvas2d, x, y) {
+  paint_blankTile (canvas2d, spritesheet, x, y) {
     canvas2d.fillStyle = '#eee';
     canvas2d.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
   }
   
-  paint_movingTile (canvas2d) {
+  paint_movingTile (canvas2d, spritesheet) {
     
     const tile = this.movingTile;
     if (!tile) return;
@@ -77,6 +77,7 @@ class Grid {
     
     tile.paint(
       canvas2d,
+      spritesheet,
       this.moveFromX + this.leftPadding,
       this.moveFromY + this.topPadding,
       offsetX,

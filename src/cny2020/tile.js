@@ -13,7 +13,7 @@ class Tile {
       : true;
   }
   
-  paint (canvas2d, x, y, offsetX = 0, offsetY = 0) {
+  paint (canvas2d, spritesheet, x, y, offsetX = 0, offsetY = 0) {
     canvas2d.fillStyle = '#a44';
     if (!this.canMove) canvas2d.fillStyle = '#654';
     canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);

@@ -49,7 +49,9 @@ class Rat {
     canvas2d.stroke();
     
     const col = this.direction;
-    const row = (animationPercentage < 0.5) ? 0 : 1;
+    const row = ((animationPercentage >= 0.0 && animationPercentage < 0.25)
+                 || (animationPercentage >= 0.5 && animationPercentage < 0.75)) 
+      ? 0 : 1;
     
     canvas2d.drawImage(
       spritesheet,

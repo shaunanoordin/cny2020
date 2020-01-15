@@ -21,7 +21,7 @@ class CNY2020 {
     this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
     this.animationCounter = 0;
-    this.animationDuration = 1000;
+    this.animationDuration = 2000;
     
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;

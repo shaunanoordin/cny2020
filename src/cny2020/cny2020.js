@@ -35,12 +35,16 @@ class CNY2020 {
     this.ready = false;
     this.assets = {
       sprites: new ImageAsset('assets/sprites.png'),
+      startScreen: new ImageAsset('assets/start-screen.png'),
       winScreen: new ImageAsset('assets/win-screen.png'),
     };
     
     this.level = 0;
     this.grid = new Grid();
     this.loadLevel();
+    
+    this.isWinScreenShowing = true;
+    this.html.button.textContent = 'Start!';
     
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
@@ -156,10 +160,12 @@ class CNY2020 {
   }
   
   paintWinScreen () {
-    this.fillStyle = '#c44';
-    // this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+    const image = (this.level === 0)
+      ? this.assets.startScreen.img
+      : this.assets.winScreen.img;
+    
     this.canvas2d.drawImage(
-      this.assets.winScreen.img,
+      image,
       0, 0, this.canvasWidth, this.canvasHeight,
       0, 0, this.canvasWidth, this.canvasHeight
     );

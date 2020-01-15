@@ -69,8 +69,8 @@ class Tile {
     }
     
     // Draw the border of the tile 
-    canvas2d.strokeStyle = '#ccc';
-    canvas2d.lineWidth = 1;
+    canvas2d.strokeStyle = '#eee';
+    canvas2d.lineWidth = 2;
     canvas2d.strokeRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
     
     // If it's a Goal tile, draw some cheese!

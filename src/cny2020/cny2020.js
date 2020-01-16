@@ -178,6 +178,8 @@ class CNY2020 {
     const y = Math.floor(coords.y / TILE_SIZE) - this.grid.topPadding;
     
     this.moveTile(x, y);
+    
+    return stopEvent(e);
   }
   
   onButtonClick (e) {
@@ -331,6 +333,16 @@ function getEventCoords (event, element) {
   const x = event.offsetX * xRatio;
   const y = event.offsetY * yRatio;
   return { x, y };
+}
+
+function stopEvent (e) {
+  if (!e) return false;
+  //var eve = e || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  e.returnValue = false;
+  e.cancelBubble = true;
+  return false;
 }
 
 export default CNY2020;

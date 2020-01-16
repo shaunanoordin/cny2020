@@ -13,12 +13,22 @@ class Tile {
       : true;
   }
   
-  paint (canvas2d, spritesheet, animationPercentage, x, y, offsetX = 0, offsetY = 0) {
+  paint (canvas2d, spritesheet = null, animationPercentage = 0, canBeClicked = false, x, y, offsetX = 0, offsetY = 0) {
+    // Draw the base of the tile
     canvas2d.fillStyle = '#a44';
-    if (!this.canMove) canvas2d.fillStyle = '#654';
+    if (!this.canMove) {
+      canvas2d.fillStyle = '#654';
+    } else if (canBeClicked) {
+      const r = 204 + Math.abs(0.5 - animationPercentage) * 2 * 17;
+      const g = 68 + Math.abs(0.5 - animationPercentage) * 2 * 34;
+      const b = 68 + Math.abs(0.5 - animationPercentage) * 2 * 17;
+      const a = 1.0;
+      canvas2d.fillStyle = `rgba(${r},${g},${b},${a})`;
+    }
+    
     canvas2d.fillRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
 
-    // canvas2d.lineCap = "round";
+    // Draw the paths in the tile
     canvas2d.lineWidth = 8;
     canvas2d.strokeStyle = '#fff';
     if (this.east) {
@@ -45,7 +55,8 @@ class Tile {
       canvas2d.lineTo((x + 0.5) * TILE_SIZE + offsetX, (y + 0) * TILE_SIZE + offsetY);
       canvas2d.stroke();
     }
-    
+        
+    // Draw the center of the paths, if this tile has any paths.
     if (this.north || this.south || this.east || this.west) {
       canvas2d.fillStyle = '#fff';
       canvas2d.beginPath();
@@ -56,6 +67,11 @@ class Tile {
         0, 2 * Math.PI);
       canvas2d.fill();
     }
+    
+    // Draw the border of the tile 
+    canvas2d.strokeStyle = '#eee';
+    canvas2d.lineWidth = 2;
+    canvas2d.strokeRect(x * TILE_SIZE + offsetX, y * TILE_SIZE + offsetY, TILE_SIZE, TILE_SIZE);
     
     // If it's a Goal tile, draw some cheese!
     if (this.goal) {
@@ -73,8 +89,10 @@ class Tile {
       const row = (animationPercentage < 0.5) ? 0 : 1;
       canvas2d.drawImage(
         spritesheet,
-        col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE,
-        x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE
+        col * TILE_SIZE, row * TILE_SIZE,
+        TILE_SIZE, TILE_SIZE,
+        x * TILE_SIZE  + offsetX, y * TILE_SIZE + offsetY,
+        TILE_SIZE, TILE_SIZE
       );
     }
   }

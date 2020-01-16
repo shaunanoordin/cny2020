@@ -21,7 +21,7 @@ class CNY2020 {
     this.html.button.addEventListener('click', this.onButtonClick.bind(this));
     
     this.animationCounter = 0;
-    this.animationDuration = 1000;
+    this.animationDuration = 2000;
     
     this.tileMovingCounter = 0;
     this.tileMovingDuration = 100;
@@ -35,12 +35,16 @@ class CNY2020 {
     this.ready = false;
     this.assets = {
       sprites: new ImageAsset('assets/sprites.png'),
+      startScreen: new ImageAsset('assets/start-screen.png'),
       winScreen: new ImageAsset('assets/win-screen.png'),
     };
     
     this.level = 0;
     this.grid = new Grid();
     this.loadLevel();
+    
+    this.isWinScreenShowing = true;
+    this.html.button.textContent = 'Start!';
     
     this.prevTime = null;
     this.nextFrame = window.requestAnimationFrame(this.main.bind(this));
@@ -156,10 +160,12 @@ class CNY2020 {
   }
   
   paintWinScreen () {
-    this.fillStyle = '#c44';
-    // this.canvas2d.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+    const image = (this.level === 0)
+      ? this.assets.startScreen.img
+      : this.assets.winScreen.img;
+    
     this.canvas2d.drawImage(
-      this.assets.winScreen.img,
+      image,
       0, 0, this.canvasWidth, this.canvasHeight,
       0, 0, this.canvasWidth, this.canvasHeight
     );
@@ -172,6 +178,8 @@ class CNY2020 {
     const y = Math.floor(coords.y / TILE_SIZE) - this.grid.topPadding;
     
     this.moveTile(x, y);
+    
+    return stopEvent(e);
   }
   
   onButtonClick (e) {
@@ -325,6 +333,16 @@ function getEventCoords (event, element) {
   const x = event.offsetX * xRatio;
   const y = event.offsetY * yRatio;
   return { x, y };
+}
+
+function stopEvent (e) {
+  if (!e) return false;
+  //var eve = e || window.event;
+  e.preventDefault && e.preventDefault();
+  e.stopPropagation && e.stopPropagation();
+  e.returnValue = false;
+  e.cancelBubble = true;
+  return false;
 }
 
 export default CNY2020;

@@ -57,7 +57,12 @@ class Grid {
       if (!tile || tile === this.movingTile) {
         this.paint_blankTile(canvas2d, x, y);
       } else {
-        tile.paint(canvas2d, spritesheet, animationPercentage, x, y);
+        const rat = this.rat;
+        const ratIsOnTile =
+          (xIndex === rat.x && yIndex === rat.y)
+          || (xIndex === rat.toX && yIndex === rat.toY);
+        const canBeClicked = !!this.getEmptyNeighboursForTile(xIndex, yIndex) && !ratIsOnTile;
+        tile.paint(canvas2d, spritesheet, animationPercentage, canBeClicked, x, y);
       }
     }
   }
@@ -79,6 +84,7 @@ class Grid {
       canvas2d,
       spritesheet,
       animationPercentage,
+      false,
       this.moveFromX + this.leftPadding,
       this.moveFromY + this.topPadding,
       offsetX,
@@ -112,6 +118,34 @@ class Grid {
     return (this.tiles && this.tiles[actualY] && this.tiles[actualY][actualX])
       ? this.tiles[actualY][actualX]
       : null;
+  }
+  
+  getEmptyNeighboursForTile (x, y) {
+    const tile = this.getTile(x, y);
+    if (!tile) return;
+    
+    // Fetch all adjacent tiles.
+    const eTile = this.getTile(x + 1, y);
+    const wTile = this.getTile(x - 1, y);
+    const sTile = this.getTile(x, y + 1);
+    const nTile = this.getTile(x, y - 1);
+
+    // Check that the adjacent tiles are empty, and that those adjacent tiles are within the grid's bounds.
+    const eIsEmpty = (!eTile && (x + 1) < this.width);
+    const wIsEmpty = (!wTile && (x - 1) >= 0);
+    const sIsEmpty = (!sTile && (y + 1) < this.height);
+    const nIsEmpty = (!nTile && (y - 1) >= 0);
+    
+    if (eIsEmpty || wIsEmpty || sIsEmpty || nIsEmpty) {
+      return {
+        east: eIsEmpty,
+        west: wIsEmpty,
+        south: sIsEmpty,
+        north: nIsEmpty,
+      };
+    }
+    
+    return null;
   }
 }
 

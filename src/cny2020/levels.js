@@ -4,6 +4,7 @@ import Tile from './tile';
 
 export function getLevel(level) {
   switch (level) {
+
     case 0:  // Starter level
       return new Grid({
         width: 3,
@@ -85,6 +86,74 @@ export function getLevel(level) {
           x: 0,
           y: 0,
           direction: DIRECTIONS.SOUTH,
+        },
+      });
+    
+    case 3:
+      return new Grid({
+        width: 5,
+        height: 3,
+        tiles: [
+          [
+            new Tile({ e: true, }),
+            null,
+            new Tile({ s: true, e: true, canMove: false, }),
+            null,
+            new Tile({ w: true, e: true, }),
+          ],
+          [
+            new Tile({ s: true, n: true, }),
+            new Tile({ w: true, s: true, }),
+            new Tile({ s: true, n: true, canMove: false, }),
+            new Tile({ w: true, s: true, }),
+            new Tile({ n: true, s: true, }),
+          ],
+          [
+            new Tile({ n: true, e: true, }),
+            new Tile({ s: true, n: true, }),
+            new Tile({ n: true, w: true, canMove: false, }),
+            new Tile({ n: true, e: true, canMove: false, }),
+            new Tile({ w: true, goal: true, canMove: false, }),
+          ],
+        ],
+        rat: {
+          x: 0,
+          y: 0,
+          direction: DIRECTIONS.EAST,
+        },
+      });
+    
+    case 4:
+      return new Grid({
+        width: 5,
+        height: 3,
+        tiles: [
+          [
+            new Tile({ e: true, }),
+            null,
+            new Tile({ s: true, e: true, canMove: false, }),
+            null,
+            new Tile({ w: true, e: true, }),
+          ],
+          [
+            new Tile({ s: true, n: true, }),
+            new Tile({ w: true, s: true, }),
+            new Tile({ s: true, n: true, canMove: false, }),
+            new Tile({ w: true, n: true, }),
+            new Tile({ n: true, s: true, }),
+          ],
+          [
+            new Tile({ n: true, e: true, }),
+            new Tile({ s: true, n: true, }),
+            new Tile({ n: true, w: true, canMove: false, }),
+            new Tile({ n: true, e: true, }),
+            new Tile({ w: true, goal: true, }),
+          ],
+        ],
+        rat: {
+          x: 0,
+          y: 0,
+          direction: DIRECTIONS.EAST,
         },
       });
     

@@ -97,6 +97,7 @@ table {
   #controls {
     flex: 1 1 auto;
     display: flex;
+    flex-direction: column;
     overflow: auto;
     justify-content: center;
     align-items: center;
@@ -109,5 +110,13 @@ table {
     background: $primary;
     padding: 0.5em 1em;
     cursor: pointer;
+  }
+  
+  #window-size-helper {
+    background: #888;
+    color: #fff;
+    padding: 1em;
+    margin: 1em;
+    display: none;
   }
 }

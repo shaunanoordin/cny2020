@@ -2,10 +2,10 @@ import { TILE_SIZE, DIRECTIONS } from './constants';
 
 class Tile {
   constructor (config) {
-    this.south = (config && config.south) || false;
-    this.north = (config && config.north) || false;
-    this.east = (config && config.east) || false;
-    this.west = (config && config.west) || false;
+    this.south = (config && (config.south || config.s)) || false;
+    this.north = (config && (config.north || config.n)) || false;
+    this.east = (config && (config.east || config.e)) || false;
+    this.west = (config && (config.west || config.w)) || false;
     
     this.goal = !!(config && config.goal) || false;
     this.canMove = !!(config && config.hasOwnProperty('canMove'))

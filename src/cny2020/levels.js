@@ -4,14 +4,13 @@ import Tile from './tile';
 
 export function getLevel(level) {
   switch (level) {
-
     case 0:  // Starter level
       return new Grid({
         width: 3,
         height: 3,
         tiles: [
           [
-            new Tile({ east: true, }),
+            new Tile({ east: true, canMove: false, }),
             new Tile({ west: true, south: true, }),
             new Tile({ }),
           ],
@@ -23,7 +22,7 @@ export function getLevel(level) {
           [
             new Tile({ }),
             new Tile({ east: true, north: true, }),
-            new Tile({ west: true, goal: true, }),
+            new Tile({ west: true, goal: true, canMove: false, }),
           ],
         ],
         rat: {
@@ -39,9 +38,9 @@ export function getLevel(level) {
         height: 3,
         tiles: [
           [
-            new Tile({ south: true, }),
+            new Tile({ south: true, canMove: false, }),
             new Tile({ }),
-            new Tile({ south: true, goal: true }),
+            new Tile({ south: true, goal: true, canMove: false, }),
           ],
           [
             null,
@@ -79,7 +78,7 @@ export function getLevel(level) {
           [
             new Tile({ north: true, east: true, }),
             new Tile({ west: true, south: true, }),
-            new Tile({ west: true, goal: true, }),
+            new Tile({ west: true, goal: true, canMove: false, }),
           ],
         ],
         rat: {
@@ -95,7 +94,7 @@ export function getLevel(level) {
         height: 3,
         tiles: [
           [
-            new Tile({ e: true, }),
+            new Tile({ e: true, canMove: false, }),
             null,
             new Tile({ s: true, e: true, canMove: false, }),
             null,
@@ -148,6 +147,54 @@ export function getLevel(level) {
             new Tile({ n: true, w: true, canMove: false, }),
             new Tile({ n: true, e: true, }),
             new Tile({ w: true, goal: true, }),
+          ],
+        ],
+        rat: {
+          x: 0,
+          y: 0,
+          direction: DIRECTIONS.EAST,
+        },
+      });
+    
+    case 5:
+      return new Grid({
+        width: 5,
+        height: 5,
+        tiles: [
+          [
+            new Tile({ e: true, canMove: false, }),
+            new Tile({ w: true, s: true, canMove: false, }),
+            new Tile({ e: true, s: true, canMove: false, }),
+            new Tile({ e: true, w: true, canMove: false, }),
+            new Tile({ s: true, w: true, canMove: false, }),
+          ],
+          [
+            new Tile({ w: true, n: true, }),
+            new Tile({ }),
+            new Tile({ s: true, n: true, canMove: false, }),
+            new Tile({ w: true, n: true, }),
+            new Tile({ w: true, e: true, }),
+          ],
+          [
+            new Tile({ n: true, s: true, }),
+            null,
+            new Tile({ n: true, e: true, w: true, s: true, canMove: false, }),
+            null,
+            new Tile({ s: true, n: true, }),
+          ],
+          [
+            new Tile({ w: true, s: true, }),
+            new Tile({ n: true, e: true, }),
+            new Tile({ n: true, s: true, canMove: false, }),
+            new Tile({ w: true, s: true, }),
+            new Tile({ e: true, s: true, }),
+          ],
+          [
+            new Tile({ e: true, goal: true, canMove: false, }),
+            new Tile({ e: true, w: true, canMove: false, }),
+            new Tile({ n: true, w: true, canMove: false,  }),
+            new Tile({ canMove: false, }),
+            new Tile({ canMove: false, }),
           ],
         ],
         rat: {

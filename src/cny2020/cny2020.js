@@ -10,6 +10,7 @@ class CNY2020 {
       app: document.getElementById('app'),
       canvas: document.getElementById('canvas'),
       button: document.getElementById('button'),
+      windowSizeHelper: document.getElementById('window-size-helper'),
     };
     this.canvas2d = this.html.canvas.getContext('2d');
     this.canvasWidth = TILE_SIZE * GRID_WIDTH;
@@ -19,6 +20,9 @@ class CNY2020 {
     this.html.canvas.height = this.canvasHeight;
     this.html.canvas.addEventListener('pointerdown', this.onPointerDown.bind(this));
     this.html.button.addEventListener('click', this.onButtonClick.bind(this));
+    
+    this.checkWindowSize();
+    window.addEventListener('resize', this.checkWindowSize.bind(this)); 
     
     this.animationCounter = 0;
     this.animationDuration = 2000;
@@ -322,6 +326,18 @@ class CNY2020 {
       this.html.button.textContent = 'Next Level!';
     } else {
       this.html.button.textContent = 'GONG XI FA CAI! You\'ve cleared all the levels!';
+    }
+  }
+  
+  checkWindowSize () {
+    const width = window.innerWidth || 0;
+    const height = window.innerHeight || 0;
+    const ratio = (width > 0 && height > 0) ? width / height : 1;
+    
+    if (ratio < 1) {
+      this.html.windowSizeHelper.style.display = 'block';
+    } else {
+      this.html.windowSizeHelper.style.display = 'none';
     }
   }
 };

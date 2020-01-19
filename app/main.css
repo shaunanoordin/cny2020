@@ -83,6 +83,7 @@ table th {
 #app > main #controls {
   flex: 1 1 auto;
   display: flex;
+  flex-direction: column;
   overflow: auto;
   justify-content: center;
   align-items: center;
@@ -94,6 +95,13 @@ table th {
   background: #c44;
   padding: 0.5em 1em;
   cursor: pointer;
+}
+#app > main #window-size-helper {
+  background: #888;
+  color: #fff;
+  padding: 1em;
+  margin: 1em;
+  display: none;
 }
 
 /*# sourceMappingURL=main.css.map */
